@@ -35,7 +35,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-west-2
     
-    sync-files-to-s3:
+  sync-files-to-s3:
       needs: terraform-apply
       runs-on: ubuntu-latest
       steps:
