@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "etl-bucket-name" {
 terraform {
   backend "s3" {
     bucket = "tfstateingridy"
-    key    = "tfstate"
+    key    = "tfstate.tfstate"
     region = "us-east-1"
   }
 }
