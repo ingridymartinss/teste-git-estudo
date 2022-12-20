@@ -19,4 +19,4 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Sync files to S3
-        run: aws s3 sync . s3://ingridy-data-etl/code --recursive
+        run: aws s3 sync . s3://ingridy-data-etl/code
