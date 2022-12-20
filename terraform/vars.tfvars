@@ -1,2 +1,9 @@
-data-bucket-name = "ingridy-data"
-etl-bucket-name = "ingridy-data-etl"
+variable "data-bucket-name" {
+  type = string
+  description = "ingridy-data"
+}
+
+variable "etl-bucket-name" {
+  type = string
+  description = "ingridy-data-etl"
+}
