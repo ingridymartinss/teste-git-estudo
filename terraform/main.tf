@@ -1,7 +1,7 @@
-resource "aws_s3_bucket" "data" {
+resource "aws_s3_bucket" "data-bucket" {
   bucket = var.data-bucket-name
 }
 
-resource "aws_s3_bucket" "data-etl" {
-  bucket = var.data-etl-bucket-name
+resource "aws_s3_bucket" "etl-bucket" {
+  bucket = var.etl-bucket-name
 }
