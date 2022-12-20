@@ -1,6 +1,7 @@
-module "main" {
-  source = "./terraform/s3_bucket_module.tf"
+resource "aws_s3_bucket" "data" {
+  bucket = var.data-bucket-name
+}
 
-  ingridy_data_etl_bucket_name = "ingridy-data-etl"
-  ingridy_data_bucket_name     = "ingridy-data"
+resource "aws_s3_bucket" "data-etl" {
+  bucket = var.data-etl-bucket-name
 }
