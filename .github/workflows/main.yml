@@ -16,20 +16,48 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
+      - name: check modified files
+      shell: bash {0}
+      id: check-modified-files
+      run: |
+          if [ ${{ github.event_name }} == 'pull_request' ]; then
+            CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} \
+                          | grep -E "terraform")
+          else
+            CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.before }} ${{ github.event.after }} \
+                          | grep -E "terraform")
+          fi
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No Files Found"
+            echo "::set-output name=run_job::false"
+          else
+            echo "Files found"
+            echo "::set-output name=run_job::true"
+          fi      
       - name: Install Terraform
+        shell: bash {0}
+        if: ${{ steps.check-modified-files.outputs.run_job == 'true' }}
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.15.0
       - name: Terraform Init
+        shell: bash {0}
+        if: ${{ steps.check-modified-files.outputs.run_job == 'true' }}
         working-directory: terraform/
         run: terraform init
       - name: Plan
+        shell: bash {0}
+        if: ${{ steps.check-modified-files.outputs.run_job == 'true' }}
         working-directory: terraform/
         id: plan
-        run: terraform plan -var-file="vars.tfvars" -out=plan.tfplan
-      - name: Check if plan contains additions
-        run: |          
-          plan_output=$(terraform show -no-color plan.tfplan)
-          if [[ $plan_output =~ "+ resource" ]]; then
-            echo $plan_output
-          fi
+        run: terraform plan -var-file="vars.tfvars"
+      - name: Apply
+        shell: bash {0}
+        if: ${{ steps.check-modified-files.outputs.run_job == 'true' }}
+        working-directory: terraform/
+        run: terraform apply -var-file="vars.tfvars" -auto-approve
+      - name: Sync files to S3
+        shell: bash {0}
+        if: ${{ steps.check-modified-files.outputs.run_job == 'true' }}
+        run: aws s3 sync . s3://ingridy-data-etl/code
