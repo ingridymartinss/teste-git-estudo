@@ -40,19 +40,13 @@ jobs:
               echo "::set-output name=run_job::true"
             fi      
       - name: Terraform Init
-        shell: bash {0}
-        if: ${{ steps.check-modified-files.outputs.run_job == 'true' }}
         working-directory: terraform/
         run: terraform init
       - name: Plan
-        shell: bash {0}
-        if: ${{ steps.check-modified-files.outputs.run_job == 'true' }}
         working-directory: terraform/
         id: plan
         run: terraform plan -var-file="vars.tfvars"
       - name: Apply
-        shell: bash {0}
-        if: ${{ steps.check-modified-files.outputs.run_job == 'true' }}
         working-directory: terraform/
         run: terraform apply -var-file="vars.tfvars" -auto-approve
       - name: Sync files to S3
