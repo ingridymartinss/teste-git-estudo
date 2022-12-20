@@ -8,7 +8,6 @@ resource "aws_s3_bucket" "etl-bucket-name" {
 
 terraform {
   backend "s3" {
-    bucket = var.etl-bucket-name
     key    = "tfstate/tfstate.tfstate"
   }
 }
