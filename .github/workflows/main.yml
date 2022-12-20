@@ -24,11 +24,3 @@ jobs:
     - name: Apply
       if: success()
       run: terraform apply -auto-approve
-    - name: Upload to S3
-      if: success()
-      uses: aws-actions/s3-upload-action@v1
-      with:
-        bucket: ingridy-data-etl
-        local_dir: .
-        prefix: code/
-        acl: public-read
