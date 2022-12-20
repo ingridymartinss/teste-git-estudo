@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  terraform-apply:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -16,7 +16,26 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.15.0
+      - name: Terraform Init
+        working-directory: terraform/
+        run: terraform init
+      - name: Plan
+        working-directory: terraform/
+        run: terraform plan -var-file="vars.tfvars"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-west-2
+      - name: Apply
+        working-directory: terraform/
+        run: terraform apply -var-file="vars.tfvars" -auto-approve
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-west-2
       - name: Sync files to S3
         run: aws s3 sync . s3://ingridy-data-etl/code
