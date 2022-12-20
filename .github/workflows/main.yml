@@ -31,6 +31,5 @@ jobs:
         run: |          
           plan_output=$(terraform show -no-color plan.tfplan)
           if [[ $plan_output =~ "+ resource" ]]; then
-            terraform apply plan.tfplan
-            aws s3 sync . s3://ingridy-data-etl/code
+            echo $plan_output
           fi
