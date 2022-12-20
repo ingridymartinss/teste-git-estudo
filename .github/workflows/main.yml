@@ -25,14 +25,14 @@ jobs:
         run: terraform init
       - name: Plan
         working-directory: terraform/
-        run: terraform plan -var-file=vars.tfvars”
+        run: terraform plan -var-file=terraform/vars.tfvars”
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-west-2
       - name: Apply
         working-directory: terraform/
-        run: terraform apply -var-file=vars.tfvars” -auto-approve
+        run: terraform apply -var-file=terraform/vars.tfvars” -auto-approve
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
