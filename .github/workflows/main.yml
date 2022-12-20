@@ -26,11 +26,17 @@ jobs:
       - name: Plan
         working-directory: terraform/
         id: plan
-        run: terraform plan -var-file="vars.tfvars"
-      - name: Apply
-        if: steps.plan.outputs.result != ''
-        working-directory: terraform/
-        run: terraform apply -var-file="vars.tfvars" -auto-approve
-      - name: Sync files to S3
-        if: steps.plan.outputs.result != ''
-        run: aws s3 sync . s3://ingridy-data-etl/code
+        run: terraform plan -var-file="vars.tfvars" -out=plan.tfplan
+      - name: Check if plan contains additions
+        run: |
+          # Show the contents of the plan file
+          plan_output=$(terraform show -no-color plan.tfplan)
+  
+          # Check if the plan file contains any additions
+          if [[ $plan_output =~ "+ resource" ]]; then
+            # If the plan file contains additions, apply the plan
+            terraform apply plan.tfplan
+  
+            # Sync files to S3
+            aws s3 sync . s3://ingridy-data-etl/code
+          fi
