@@ -20,6 +20,8 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.15.0
+      - name: Terraform Init
+        run: terraform init
       - name: Plan
         run: terraform plan
         working-directory: terraform/
