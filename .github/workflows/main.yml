@@ -36,8 +36,6 @@ jobs:
               echo "::set-output name=run_job::true"
             fi      
       - name: Install Terraform
-        shell: bash {0}
-        if: ${{ steps.check-modified-files.outputs.run_job == 'true' }}
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.15.0
