@@ -22,7 +22,7 @@ jobs:
           terraform_version: 0.15.0
       - name: Terraform Init
         working-directory: terraform/
-        run: terraform init -backend-config=tfstate.conf
+        run: terraform init -backend-config prod-config.tfvars
       - name: Plan
         working-directory: terraform/
         id: plan
