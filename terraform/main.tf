@@ -1,4 +1,4 @@
-module "s3_buckets" {
+module "main" {
   source = "./terraform/s3_bucket_module.tf"
 
   ingridy_data_etl_bucket_name = "ingridy-data-etl"
