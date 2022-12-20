@@ -13,4 +13,16 @@ data "terraform_remote_state" "my_state" {
     key    = "tfstate/tfstate.tfstate"
     region = "us-east-1"
   }
+  policy = <<-EOF
+  {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Effect": "Allow",
+              "Action": "s3:*",
+              "Resource": "*"
+          }
+      ]
+  }
+  EOF
 }
