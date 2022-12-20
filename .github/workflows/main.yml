@@ -30,5 +30,11 @@ jobs:
       - name: Apply
         working-directory: terraform/
         run: terraform apply -var-file="vars.tfvars" -auto-approve
+      - name: Parse Terraform variables
+        id: parse_tfvars
+        uses: cloudposse/parse-tfvars@v1
+        with:
+          tfvars_path: vars.tfvars
+          variable_name: etl-bucket-name
       - name: Sync files to S3
-        run: aws s3 sync . s3://ingridy-data-etl/code
+        run: aws s3 sync . s3://${{ steps.parse_tfvars.outputs.region }}/code2
