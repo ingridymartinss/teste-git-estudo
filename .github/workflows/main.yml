@@ -33,8 +33,7 @@ jobs:
       - name: check modified files
         id: check-modified-files
         run: |
-          CHANGED_FILES=$(git diff)
-          if [ -z "$CHANGED_FILES" ]; then
+          if [ -z $(git diff --name-only) ]; then
             echo "No Files Found"
             echo "::set-output name=run_job::false"
           else
