@@ -40,4 +40,5 @@ jobs:
           CHANGED_FILES=$(echo "${{ steps.check-validated-files.outputs.all }}")
           if [[ $CHANGED_FILES =~ "terraform" ]]; then
             aws s3 sync . s3://${{ env.ETL_BUCKET_NAME }}/code/
+          fi
           
