@@ -34,7 +34,8 @@ jobs:
       - name: check modified files
         id: check-modified-files
         run: |
-          echo "$(git show HEAD --name-only --diff-filter=ACM)"
+          echo "GIT_HEAD=$(git show HEAD --name-only --diff-filter=ACM)"
+          echo "$GIT_HEAD"
       - name: Sync files to S3
         if: ${{ env.IS_MODIFIED == 1 }}
         run: aws s3 sync . s3://${{ env.ETL_BUCKET_NAME }}/code/
