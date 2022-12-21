@@ -34,5 +34,5 @@ jobs:
         run: git diff --exit-code terraform/
         id: changes
       - name: Sync files to S3
-        if: steps.changes.outputs.exit-code == 0
+        if: steps.changes.outputs.exit-code != 0
         run: aws s3 sync . s3://${{ env.ETL_BUCKET_NAME }}/code/
