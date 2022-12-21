@@ -29,11 +29,10 @@ jobs:
         run: terraform apply -var-file="vars.tfvars" -auto-approve
       - name: Set environment variables
         run: |
-          echo "ETL_BUCKET_NAME=$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')" >> $GITHUB_ENV
-      
+          echo "ETL_BUCKET_NAME=$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')" >> $GITHUB_ENV      
       - uses: jitterbit/get-changed-files@v1
+      - name: Check changed files
         id: changed-files
-      - name: Printing
         run: |
           CHANGED_FILES=$(echo "${{ steps.changed-files.outputs.all }}")
           if [[ $CHANGED_FILES =~ "terraform" ]]; then
