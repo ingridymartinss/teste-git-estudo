@@ -33,15 +33,11 @@ jobs:
       - name: check modified files
         id: check-modified-files
         run: |
-          if git rev-parse HEAD~1 > /dev/null 2>&1; then
-            CHANGED_FILES=$(git diff HEAD HEAD~1 --name-only)
-            if [[ $CHANGED_FILES =~ "terraform" ]]; then
-              echo "IS_MODIFIED = 1"
-            else
-              echo "IS_MODIFIED = 0"
-            fi
+          CHANGED_FILES=$(git show HEAD --name-only --diff-filter=ACM)
+          if [[ $CHANGED_FILES =~ "terraform" ]]; then
+            echo "IS_MODIFIED = 1"
           else
-            echo "IS_MODIFIED = 3"
+            echo "IS_MODIFIED = 0"
           fi
       - name: Sync files to S3
         if: ${{ env.IS_MODIFIED == 1 }}
