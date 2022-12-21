@@ -33,7 +33,7 @@ jobs:
       - name: check modified files
         id: check-modified-files
         run: |
-          CHANGED_FILES=$(git diff HEAD^ HEAD --name-only)
+          CHANGED_FILES=$(git diff HEAD HEAD~1 --name-only)
           if [[ $CHANGED_FILES =~ "terraform" ]]; then
             echo "IS_MODIFIED = 1"
           else
