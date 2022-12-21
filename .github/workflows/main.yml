@@ -41,7 +41,7 @@ jobs:
               echo "IS_MODIFIED = 0"
             fi
           else
-            echo "IS_MODIFIED = 0"
+            echo "IS_MODIFIED = 3"
           fi
       - name: Sync files to S3
         if: ${{ env.IS_MODIFIED == 1 }}
