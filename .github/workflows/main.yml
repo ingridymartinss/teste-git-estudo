@@ -34,7 +34,6 @@ jobs:
       - uses: jitterbit/get-changed-files@v1
         id: check-validated-files
       - name: Sync files to S3
-        if: ${{ env.IS_MODIFIED == 1 }}
         run: |
           echo "${{ steps.check-validated-files.outputs.all }}"
           
