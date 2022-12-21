@@ -41,7 +41,7 @@ jobs:
             echo "IS_MODIFIED = 1" >> $GITHUB_ENV
           else
             echo "IS_MODIFIED = 0" >> $GITHUB_ENV
-          echo "$IS_MODIFIED"
+          echo "env.IS_MODIFIED"
           fi
       - name: Sync files to S3
         if: ${{ env.IS_MODIFIED == 1 }}
