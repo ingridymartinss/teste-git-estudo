@@ -26,13 +26,12 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         run: |
-          echo "::set-env name=ETL_BUCKET_NAME::$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')"
+          echo "::ETL_BUCKET_NAME::$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')" >> $GITHUB_ENV
       - name: Terraform Init
         working-directory: terraform/
         run: terraform init -backend-config=prod_config.tfvars
       - name: Plan
         working-directory: terraform/
-        id: plan
         run: terraform plan -var-file="vars.tfvars"
       - name: Apply
         working-directory: terraform/
