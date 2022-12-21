@@ -34,12 +34,7 @@ jobs:
       - name: check modified files
         id: check-modified-files
         run: |
-          CHANGED_FILES=$(git show HEAD --name-only --diff-filter=ACM)
-          if [[ $CHANGED_FILES =~ "terraform" ]]; then
-            echo "IS_MODIFIED = 1"
-          else
-            echo "IS_MODIFIED = 0"
-          fi
+          echo "$(git show HEAD --name-only --diff-filter=ACM)"
       - name: Sync files to S3
         if: ${{ env.IS_MODIFIED == 1 }}
         run: aws s3 sync . s3://${{ env.ETL_BUCKET_NAME }}/code/
