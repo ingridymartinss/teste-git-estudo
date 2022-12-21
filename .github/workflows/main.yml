@@ -19,7 +19,9 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.15.0    
+          terraform_version: 0.15.0   
+          variable_files: |
+            vars.tfvars
       - name: Terraform Init
         working-directory: terraform/
         run: terraform init -backend-config=prod_config.tfvars
@@ -31,6 +33,4 @@ jobs:
         working-directory: terraform/
         run: terraform apply -var-file="vars.tfvars" -auto-approve
       - name: Sync files to S3
-        env: 
-          code-sync-bucket-name : s3://ingridy-data-etl/code
-        run: aws s3 sync . ${{ env.code-sync-bucket-name }}
+        run: aws s3 sync . ${{ env.sync-code-bucket-name }}
