@@ -39,6 +39,7 @@ jobs:
               echo "IS_MODIFIED = 1"
             else
               echo "IS_MODIFIED = 0"
+            fi
           else
             echo "IS_MODIFIED = 0"
           fi
