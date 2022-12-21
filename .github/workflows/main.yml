@@ -18,12 +18,6 @@ jobs:
           aws-region: us-west-2
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
-        with:
-          variable_files: |
-            vars.tfvars
-      - name: Set environment variables
-        run: |
-          echo "ETL_BUCKET_NAME=$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')" >> $GITHUB_ENV
       - name: Terraform Init
         working-directory: terraform/
         run: terraform init -backend-config=prod_config.tfvars
