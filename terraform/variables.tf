@@ -1,9 +1,9 @@
 variable "data-bucket-name"{
     type = string
-    description = "Data Bucket Name"
+    description = "Data Bucket Name para bucket de teste"
 }
 
 variable "etl-bucket-name" {
   type        = string
-  description = "ETL Bucket Name"
+  description = "Data Bucket Name para bucket de teste"
 }
