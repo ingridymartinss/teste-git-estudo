@@ -32,21 +32,15 @@ jobs:
       #     echo "ETL_BUCKET_NAME=$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')" >> $GITHUB_ENV
       
       - uses: jitterbit/get-changed-files@v1
-        id: abc
+        id: changed-files
       - name: Printing
         run: |
-          echo "All:"
-          echo "${{ steps.abc.outputs.all }}"
-          echo "Added:"
-          echo "${{ steps.abc.outputs.added }}"
-          echo "Removed:"
-          echo "${{ steps.abc.outputs.removed }}"
-          echo "Renamed:"
-          echo "${{ steps.abc.outputs.renamed }}"
-          echo "Modified:"
-          echo "${{ steps.abc.outputs.modified }}"
-          echo "Added+Modified:"
-          echo "${{ steps.abc.outputs.added_modified }}"
+          CHANGED_FILES=$(echo "${{ steps.changed-files.outputs.files }}")
+          if [[ $CHANGED_FILES =~ "terraform" ]]; then
+            echo "IS_MODIFIED=1" >> $GITHUB_ENV
+          else
+            echo "IS_MODIFIED=0" >> $GITHUB_ENV
+          fi
       - name: Sync files to S3
         if: ${{ env.IS_MODIFIED == 1 }}
         run: aws s3 sync . s3://${{ env.ETL_BUCKET_NAME }}/code/
