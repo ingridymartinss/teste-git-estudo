@@ -10,26 +10,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2.1.0
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: us-west-2
-      # - name: Install Terraform
-      #   uses: hashicorp/setup-terraform@v1
-      # - name: Terraform Init
-      #   working-directory: terraform/
-      #   run: terraform init -backend-config=prod_config.tfvars
-      # - name: Plan
-      #   working-directory: terraform/
-      #   run: terraform plan -var-file="vars.tfvars"
-      # - name: Apply
-      #   working-directory: terraform/
-      #   run: terraform apply -var-file="vars.tfvars" -auto-approve
-      # - name: Set environment variables
-      #   run: |
-      #     echo "ETL_BUCKET_NAME=$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')" >> $GITHUB_ENV
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+      - name: Terraform Init
+        working-directory: terraform/
+        run: terraform init -backend-config=prod_config.tfvars
+      - name: Plan
+        working-directory: terraform/
+        run: terraform plan -var-file="vars.tfvars"
+      - name: Apply
+        working-directory: terraform/
+        run: terraform apply -var-file="vars.tfvars" -auto-approve
+      - name: Set environment variables
+        run: |
+          echo "ETL_BUCKET_NAME=$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')" >> $GITHUB_ENV
       
       - uses: jitterbit/get-changed-files@v1
         id: check-validated-files
