@@ -19,11 +19,12 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.15.0
           variable_files: |
             vars.tfvars
       - name: Set environment variables
         id: set_env
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         run: |
           echo "::set-env name=ETL_BUCKET_NAME::$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')"
       - name: Terraform Init
