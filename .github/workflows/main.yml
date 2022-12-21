@@ -19,9 +19,12 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.15.0   
+          terraform_version: 0.15.0
           variable_files: |
             vars.tfvars
+      - name: Set environment variables
+        run: |
+          echo "::set-env name=sync-code-bucket-name::$(terraform output sync-code-bucket-name)"
       - name: Terraform Init
         working-directory: terraform/
         run: terraform init -backend-config=prod_config.tfvars
@@ -33,4 +36,4 @@ jobs:
         working-directory: terraform/
         run: terraform apply -var-file="vars.tfvars" -auto-approve
       - name: Sync files to S3
-        run: aws s3 sync . ${{ env.sync-code-bucket-name }}
+        run: aws s3 sync . s3://${{ env.sync-code-bucket-name }}
