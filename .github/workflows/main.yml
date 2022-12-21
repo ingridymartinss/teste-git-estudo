@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.1.0
       # - name: Configure AWS credentials
       #   uses: aws-actions/configure-aws-credentials@v1
       #   with:
@@ -31,17 +31,22 @@ jobs:
       #   run: |
       #     echo "ETL_BUCKET_NAME=$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')" >> $GITHUB_ENV
       
-      - name: check modified files
-        id: check-modified-files
+      - uses: jitterbit/get-changed-files@v1
+        id: abc
+      - name: Printing
         run: |
-          LAST_REVISION=$(git rev-parse HEAD^)
-          CURRENT_FILES=$(git ls-tree HEAD terraform | awk '{print $4}')
-          LAST_FILES=$(git ls-tree $LAST_REVISION terraform | awk '{print $4}')
-          if [[ $CURRENT_FILES != $LAST_FILES ]]; then
-            echo "testando"
-          else
-            echo "deu ruim"
-          fi
+          echo "All:"
+          echo "${{ steps.abc.outputs.all }}"
+          echo "Added:"
+          echo "${{ steps.abc.outputs.added }}"
+          echo "Removed:"
+          echo "${{ steps.abc.outputs.removed }}"
+          echo "Renamed:"
+          echo "${{ steps.abc.outputs.renamed }}"
+          echo "Modified:"
+          echo "${{ steps.abc.outputs.modified }}"
+          echo "Added+Modified:"
+          echo "${{ steps.abc.outputs.added_modified }}"
       - name: Sync files to S3
         if: ${{ env.IS_MODIFIED == 1 }}
         run: aws s3 sync . s3://${{ env.ETL_BUCKET_NAME }}/code/
