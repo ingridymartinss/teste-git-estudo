@@ -35,7 +35,7 @@ jobs:
         id: changed-files
       - name: Printing
         run: |
-          CHANGED_FILES=$(echo "${{ steps.changed-files.outputs.files }}")
+          CHANGED_FILES=$(echo "${{ steps.changed-files.outputs.all }}")
           if [[ $CHANGED_FILES =~ "terraform" ]]; then
             echo "IS_MODIFIED=1" >> $GITHUB_ENV
           else
