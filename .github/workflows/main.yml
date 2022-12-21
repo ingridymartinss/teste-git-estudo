@@ -31,6 +31,4 @@ jobs:
         working-directory: terraform/
         run: terraform apply -var-file="vars.tfvars" -auto-approve
       - name: Sync files to S3
-        env: 
-          code-sync-bucket-name : s3://ingridy-data-etl/code
         run: aws s3 sync . ${{ env.code-sync-bucket-name }}
