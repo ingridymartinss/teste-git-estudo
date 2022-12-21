@@ -22,7 +22,7 @@ jobs:
           terraform_version: 0.15.0    
       - name: Terraform Init
         working-directory: terraform/
-        run: terraform init -backend-config prod_config.tfvars
+        run: terraform init -backend-config=prod_config.tfvars
       - name: Plan
         working-directory: terraform/
         id: plan
@@ -32,5 +32,5 @@ jobs:
         run: terraform apply -var-file="vars.tfvars" -auto-approve
       - name: Sync files to S3
         env: 
-          PATH_ETL: ${{ steps.parse_tfvars.outputs.etl-bucket-name }}
-        run: aws s3 sync . s3://$PATH_ETL/code
+          PATH_ETL: ${{ steps.parse_tfvars.outputs.code-sync-bucket-name }}
+        run: aws s3 sync . $PATH_ETL
