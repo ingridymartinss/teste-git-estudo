@@ -27,5 +27,8 @@ jobs:
       - name: Apply
         working-directory: terraform/
         run: terraform apply -var-file="vars.tfvars" -auto-approve
+      - name: Set environment variables
+        run: |
+          echo "ETL_BUCKET_NAME=$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')" >> $GITHUB_ENV
       - name: Sync files to S3
         run: aws s3 sync . s3://${{ env.ETL_BUCKET_NAME }}/code/
