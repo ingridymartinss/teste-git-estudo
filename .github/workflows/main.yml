@@ -33,4 +33,4 @@ jobs:
       - name: Sync files to S3
         env: 
           PATH_ETL: ${{ steps.parse_tfvars.outputs.code-sync-bucket-name }}
-        run: aws s3 sync . $PATH_ETL
+        run: aws s3 sync . PATH_ETL

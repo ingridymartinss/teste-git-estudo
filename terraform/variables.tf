@@ -10,5 +10,5 @@ variable "etl-bucket-name" {
 
 variable "code-sync-bucket-name" {
   type        = string
-  description = "ETL Code Bucket Name"
+  description = "Code Sync Bucket Name"
 }
