@@ -37,9 +37,9 @@ jobs:
         run: |
           CHANGED_FILES=$(echo "${{ steps.changed-files.outputs.all }}")
           if [[ $CHANGED_FILES =~ "terraform" ]]; then
-            echo "IS_MODIFIED=1" >> $GITHUB_ENV
+            echo "IS_MODIFIED=1"
           else
-            echo "IS_MODIFIED=0" >> $GITHUB_ENV
+            echo "IS_MODIFIED=0"
           fi
       - name: Sync files to S3
         if: ${{ env.IS_MODIFIED == 1 }}
