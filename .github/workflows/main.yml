@@ -25,7 +25,7 @@ jobs:
       - name: Set environment variables
         id: set_env
         run: |
-          echo "::set-env name=ETL-BUCKET-NAME::$(cat vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')"
+          echo "::set-env name=ETL-BUCKET-NAME::$(cat terraform/vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')"
       - name: Terraform Init
         working-directory: terraform/
         run: terraform init -backend-config=prod_config.tfvars
