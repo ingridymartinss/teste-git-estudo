@@ -32,5 +32,5 @@ jobs:
         run: terraform apply -var-file="vars.tfvars" -auto-approve
       - name: Sync files to S3
         env: 
-          PATH_ETL: ${{ steps.parse_tfvars.outputs.code-sync-bucket-name }}
+          code-sync-bucket-name : ${{ steps.parse_tfvars.outputs.code-sync-bucket-name }}
         run: aws s3 sync . ${{ env.code-sync-bucket-name }}
