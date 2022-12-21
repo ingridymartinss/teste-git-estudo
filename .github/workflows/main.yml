@@ -33,13 +33,10 @@ jobs:
       - name: check modified files
         id: check-modified-files
         run: |
-          if [ -z $(git diff --name-only) ]; then
-            echo "No Files Found"
-            echo "::set-output name=run_job::false"
-          else
-            echo "Files found"
-            echo "::set-output name=run_job::true"
+          echo "DIFF=$(git diff --name-only)"
+          if [ -z DIFF ]; then
+            echo DIFF
           fi
       - name: Sync files to S3
-        if: ${{ steps.check-modified-files.outputs.run_job == 'true' }}
+        if: ${{ env.RUN_JOB == 'true' }}
         run: aws s3 sync . s3://${{ env.ETL_BUCKET_NAME }}/code/
