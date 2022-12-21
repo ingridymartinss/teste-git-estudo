@@ -34,8 +34,8 @@ jobs:
         id: check-modified-files
         run: |
           echo "DIFF=$(git diff --name-only)"
-          if [ -z DIFF ]; then
-            echo DIFF
+          if [ -z $DIFF ]; then
+            echo $DIFF
           fi
       - name: Sync files to S3
         if: ${{ env.RUN_JOB == 'true' }}
