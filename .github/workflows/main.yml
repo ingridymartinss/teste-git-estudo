@@ -34,4 +34,4 @@ jobs:
         working-directory: terraform/
         run: terraform apply -var-file="vars.tfvars" -auto-approve
       - name: Sync files to S3
-        run: aws s3 sync . s3://${{ env.ETL_BUCKET_NAME }}
+        run: aws s3 sync . s3://${{ env.ETL_BUCKET_NAME }}/code/
