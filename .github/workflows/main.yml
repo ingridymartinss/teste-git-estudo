@@ -23,8 +23,9 @@ jobs:
           variable_files: |
             vars.tfvars
       - name: Set environment variables
+        id: set_env
         run: |
-          echo "::set-output name=etl-bucket-name::$(terraform output etl-bucket-name)"
+          echo "::set-env name=ETL-BUCKET-NAME::$(cat vars.tfvars | grep etl-bucket-name | cut -d '=' -f 2 | tr -d ' ')"
       - name: Terraform Init
         working-directory: terraform/
         run: terraform init -backend-config=prod_config.tfvars
@@ -36,4 +37,4 @@ jobs:
         working-directory: terraform/
         run: terraform apply -var-file="vars.tfvars" -auto-approve
       - name: Sync files to S3
-        run: aws s3 sync . s3://${{ env.etl-bucket-name }}
+        run: aws s3 sync . s3://${{ env.ETL-BUCKET-NAME }}
