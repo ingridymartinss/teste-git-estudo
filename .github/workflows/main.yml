@@ -24,7 +24,7 @@ jobs:
             vars.tfvars
       - name: Set environment variables
         run: |
-          echo "sync-code-bucket-name=$(terraform output sync-code-bucket-name)" >> $GITHUB_ENV
+          echo "etl-bucket-name=$(terraform output etl-bucket-name)" >> $GITHUB_ENV
       - name: Terraform Init
         working-directory: terraform/
         run: terraform init -backend-config=prod_config.tfvars
